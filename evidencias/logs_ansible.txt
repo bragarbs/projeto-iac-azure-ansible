@@ -1,0 +1,38 @@
+ansible-venv) renan@RENAN-PC:/mnt/c/IaC/projeto-iac-azure-terraform-ansible/ansible$ ansible windows -i inventory.ini -m ansible.windows.win_ping
+[WARNING]: Ansible is being run in a world writable directory (/mnt/c/IaC/projeto-iac-azure-terraform-ansible/ansible), ignoring it as an ansible.cfg source. For more information see https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir
+vm-windows-iis | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+(ansible-venv) renan@RENAN-PC:/mnt/c/IaC/projeto-iac-azure-terraform-ansible/ansible$ ansible-playbook -i inventory.ini playbook.yml
+[WARNING]: Ansible is being run in a world writable directory (/mnt/c/IaC/projeto-iac-azure-terraform-ansible/ansible), ignoring it as an ansible.cfg source. For more information see https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir
+
+PLAY [Configurar IIS no Windows Server 2019] *****************************************************************************************
+
+TASK [Verificar conectividade com Windows] *******************************************************************************************
+ok: [vm-windows-iis]
+
+TASK [Instalar IIS] ******************************************************************************************************************
+ok: [vm-windows-iis]
+
+TASK [Criar pagina inicial personalizada] ********************************************************************************************
+ok: [vm-windows-iis]
+
+TASK [Garantir que o IIS esteja iniciado] ********************************************************************************************
+ok: [vm-windows-iis]
+
+TASK [Liberar porta HTTP no firewall do Windows] *************************************************************************************
+ok: [vm-windows-iis]
+
+TASK [Validar resposta HTTP local] ***************************************************************************************************
+ok: [vm-windows-iis]
+
+TASK [Exibir resultado da instalacao] ************************************************************************************************
+ok: [vm-windows-iis] => {
+    "msg": "IIS instalado e respondendo HTTP com sucesso!"
+}
+
+PLAY RECAP ***************************************************************************************************************************
+vm-windows-iis             : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+ 
