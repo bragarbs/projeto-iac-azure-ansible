@@ -1,0 +1,61 @@
+
+---
+- name: Configurar IIS no Windows Server 2019
+  hosts: windows
+  gather_facts: false
+
+  tasks:
+
+    - name: Verificar conectividade com Windows
+      ansible.windows.win_ping:
+
+    - name: Instalar IIS
+      ansible.windows.win_feature:
+        name: Web-Server
+        state: present
+        include_management_tools: true
+      register: iis_install
+
+    - name: Criar pagina inicial personalizada
+      ansible.windows.win_copy:
+        content: |
+          <!DOCTYPE html>
+          <html lang="pt-br">
+          <head>
+              <meta charset="UTF-8">
+              <title>Projeto IaC - Azure</title>
+          </head>
+          <body>
+              <h1>Projeto DevOps - Unidade 4</h1>
+              <p>Windows Server 2019 provisionado com Terraform.</p>
+              <p>IIS configurado automaticamente com Ansible.</p>
+          </body>
+          </html>
+        dest: C:\inetpub\wwwroot\index.html
+
+    - name: Garantir que o IIS esteja iniciado
+      ansible.windows.win_service:
+        name: W3SVC
+        state: started
+        start_mode: auto
+
+    - name: Liberar porta HTTP no firewall do Windows
+      community.windows.win_firewall_rule:
+        name: IIS-HTTP
+        localport: 80
+        action: allow
+        direction: in
+        protocol: tcp
+        state: present
+        enabled: true
+
+    - name: Validar resposta HTTP local
+      ansible.windows.win_uri:
+        url: http://localhost
+        method: GET
+        status_code: 200
+      register: http_result
+
+    - name: Exibir resultado da instalacao
+      ansible.builtin.debug:
+        msg: "IIS instalado e respondendo HTTP com sucesso!"

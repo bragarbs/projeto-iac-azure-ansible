@@ -1,0 +1,16 @@
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/tfplan
+terraform/crash.log
+
+# Credenciais
+terraform/terraform.tfvars
+*.pem
+*.key
+
+# Python
+__pycache__/
+.venv/
